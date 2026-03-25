@@ -5,6 +5,22 @@ import { supabase } from '../lib/supabase';
 // Updated Password as per your request
 const ADMIN_PASSWORD = 'Vikrambali';
 
+// Preference Keyword Mapping
+const preferenceKeywords: { [key: string]: string } = {
+  pref_81: "People",
+  pref_82: "Tech",
+  pref_83: "Numbers",
+  pref_84: "Outdoor",
+  pref_85: "Creative",
+  pref_86: "Leadership",
+  pref_87: "Helping",
+  pref_88: "Speaking",
+  pref_89: "Design",
+  pref_90: "Physical",
+  pref_91: "Science",
+  pref_92: "Business"
+};
+
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -61,18 +77,7 @@ export default function Admin() {
       'Interpersonal',
       'Intrapersonal',
       'Naturalist',
-      'Pref 81 (People)',
-      'Pref 82 (Tech)',
-      'Pref 83 (Math)',
-      'Pref 84 (Outdoor)',
-      'Pref 85 (Creative)',
-      'Pref 86 (Leadership)',
-      'Pref 87 (Helping)',
-      'Pref 88 (Speaking)',
-      'Pref 89 (Designing)',
-      'Pref 90 (Physical)',
-      'Pref 91 (Science)',
-      'Pref 92 (Business)'
+      ...Object.values(preferenceKeywords) // Uses keywords for CSV headers
     ];
 
     const rows = results.map(result => [
@@ -210,18 +215,11 @@ export default function Admin() {
                       </>
                     ) : (
                       <>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P81</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P82</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P83</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P84</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P85</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P86</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P87</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P88</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P89</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P90</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P91</th>
-                        <th className="px-2 py-3 text-center font-semibold text-indigo-700">P92</th>
+                        {Object.values(preferenceKeywords).map((keyword) => (
+                          <th key={keyword} className="px-2 py-3 text-center font-semibold text-indigo-700 whitespace-nowrap">
+                            {keyword}
+                          </th>
+                        ))}
                       </>
                     )}
                   </tr>
