@@ -980,5 +980,153 @@ export const questions: Question[] = [
       { text: "Research sustainability of companies", score: 4 },
       { text: "Life designed around zero-waste", score: 5 }
     ]
+  },
+
+// =============================
+// PREFERENCE QUESTIONS (81–92)
+// =============================
+  {
+    id: 81,
+    category: "Preference",
+    text: "I like working with people.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 82,
+    category: "Preference",
+    text: "I enjoy working with computers or technology.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 83,
+    category: "Preference",
+    text: "I like solving maths or number problems.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 84,
+    category: "Preference",
+    text: "I enjoy outdoor activities.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 85,
+    category: "Preference",
+    text: "I like drawing, music, or creative work.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 86,
+    category: "Preference",
+    text: "I like taking leadership responsibility.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 87,
+    category: "Preference",
+    text: "I like helping people with their problems.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 88,
+    category: "Preference",
+    text: "I enjoy speaking, presenting, or expressing ideas.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 89,
+    category: "Preference",
+    text: "I like designing, building, or creating things.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 90,
+    category: "Preference",
+    text: "I enjoy physical activities or sports.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 91,
+    category: "Preference",
+    text: "I like science subjects or experiments.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
+  },
+  {
+    id: 92,
+    category: "Preference",
+    text: "I am interested in business, money, or management activities.",
+    options: [
+      { text: "STRONGLY DISAGREE", score: 1 },
+      { text: "DISAGREE", score: 2 },
+      { text: "NEUTRAL", score: 3 },
+      { text: "AGREE", score: 4 },
+      { text: "STRONGLY AGREE", score: 5 }
+    ]
   }
 ];

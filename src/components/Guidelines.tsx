@@ -1,16 +1,18 @@
 import { useState } from 'react';
 
 interface GuidelinesProps {
-  onStart: (name: string) => void;
+  onStart: (name: string, dob: string, studentClass: string) => void;
 }
 
 export default function Guidelines({ onStart }: GuidelinesProps) {
   const [name, setName] = useState('');
+  const [dob, setDob] = useState('');
+  const [studentClass, setStudentClass] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
-      onStart(name.trim());
+    if (name.trim() && dob && studentClass.trim()) {
+      onStart(name.trim(), dob, studentClass.trim());
     }
   };
 
@@ -32,7 +34,6 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
             Genius Brainz Life Solutions
           </h1>
-          {/* Using a custom hex code to match the gold/yellow in your logo */}
           <h2 className="text-2xl md:text-3xl text-[#b08d3c] font-extrabold mt-2 uppercase tracking-tight">
             Physiometric Test
           </h2>
@@ -48,7 +49,7 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
           <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
               <span className="text-[#b08d3c] font-bold mr-2">•</span>
-              <span>This assessment contains 80 questions to evaluate your cognitive abilities</span>
+              <span>This assessment contains 92 questions to evaluate your cognitive abilities</span>
             </li>
             <li className="flex items-start">
               <span className="text-[#b08d3c] font-bold mr-2">•</span>
@@ -62,17 +63,14 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
               <span className="text-[#b08d3c] font-bold mr-2">•</span>
               <span>Choose the option that best reflects your abilities and preferences</span>
             </li>
-            <li className="flex items-start">
-              <span className="text-[#b08d3c] font-bold mr-2">•</span>
-              <span>There are no right or wrong answers - be honest with yourself</span>
-            </li>
           </ul>
         </div>
 
         {/* --- FORM SECTION --- */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Name Field */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
               Enter Your Full Name
             </label>
             <input
@@ -86,9 +84,41 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
             />
           </div>
 
+          {/* DOB and Class Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="dob" className="block text-sm font-semibold text-gray-700 mb-2">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                id="dob"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                required
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b08d3c] focus:border-transparent outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="class" className="block text-sm font-semibold text-gray-700 mb-2">
+                Class / Grade
+              </label>
+              <input
+                type="text"
+                id="class"
+                value={studentClass}
+                onChange={(e) => setStudentClass(e.target.value)}
+                placeholder="e.g. 12th Science"
+                required
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b08d3c] focus:border-transparent outline-none transition-all"
+              />
+            </div>
+          </div>
+
           <button
             type="submit"
-            disabled={!name.trim()}
+            disabled={!name.trim() || !dob || !studentClass.trim()}
             className="w-full bg-[#b08d3c] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#967832] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >
             Begin Assessment
@@ -96,7 +126,7 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
         </form>
 
         <p className="text-sm text-gray-500 text-center mt-6">
-          Estimated time: 80 minutes
+          Estimated time: 90 minutes
         </p>
       </div>
     </div>

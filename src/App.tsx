@@ -11,7 +11,14 @@ type Screen = 'guidelines' | 'assessment' | 'thankyou' | 'admin';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('guidelines');
-  const [studentName, setStudentName] = useState('');
+  
+  // 1. Updated state to hold all student info (Name, DOB, Class)
+  const [studentData, setStudentData] = useState({
+    name: '',
+    dob: '',
+    studentClass: ''
+  });
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
 
@@ -23,8 +30,9 @@ function App() {
     }
   }, []);
 
-  const handleStart = (name: string) => {
-    setStudentName(name);
+  // 2. Updated handleStart to accept the 3 arguments from Guidelines.tsx
+  const handleStart = (name: string, dob: string, studentClass: string) => {
+    setStudentData({ name, dob, studentClass });
     setScreen('assessment');
     setCurrentQuestionIndex(0);
     setAnswers([]);
@@ -37,13 +45,13 @@ function App() {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Pass studentName directly to ensure it isn't lost in state timing
-      submitAssessment(newAnswers, studentName);
+      // Pass the collected data to the submission function
+      submitAssessment(newAnswers);
     }
   };
 
-  const submitAssessment = async (finalAnswers: number[], nameToSave: string) => {
-    // Initialize scores for all 8 categories
+  const submitAssessment = async (finalAnswers: number[]) => {
+    // Initialize MI Scores
     const scores: Record<SectionType, number> = {
       Linguistic: 0,
       Logical: 0,
@@ -55,23 +63,33 @@ function App() {
       Naturalist: 0,
     };
 
-    // Calculate scores based on the questions and user answers
+    // 3. Logic to capture preference scores 81 through 92
+    const prefScores: Record<string, number> = {};
+
     questions.forEach((question, index) => {
-      const cat = question.category as SectionType;
-      if (scores[cat] !== undefined) {
-        scores[cat] += finalAnswers[index] || 0;
+      const answerValue = finalAnswers[index] || 0;
+      
+      if (question.category === 'Preference') {
+        // Store preference by question ID (pref_81, pref_82 ... pref_92)
+        prefScores[`pref_${question.id}`] = answerValue;
+      } else {
+        const cat = question.category as SectionType;
+        if (scores[cat] !== undefined) {
+          scores[cat] += answerValue;
+        }
       }
     });
 
     try {
-      // Safety check: Don't submit if name is empty
-      if (!nameToSave || nameToSave.trim() === '') {
-        throw new Error("Student name is missing. Please refresh and enter your name again.");
+      if (!studentData.name || studentData.name.trim() === '') {
+        throw new Error("Student data is missing. Please restart the assessment.");
       }
 
-      // Insert into Supabase
+      // 4. Final Insert into Supabase with DOB and Class
       const { error } = await supabase.from('assessment_results').insert({
-        student_name: nameToSave,
+        student_name: studentData.name,
+        student_dob: studentData.dob,      // Matches your new DB column
+        student_class: studentData.studentClass, // Matches your new DB column
         linguistic_score: scores.Linguistic,
         logical_score: scores.Logical,
         spatial_score: scores.Spatial,
@@ -80,15 +98,14 @@ function App() {
         interpersonal_score: scores.Interpersonal,
         intrapersonal_score: scores.Intrapersonal,
         naturalist_score: scores.Naturalist,
+        // Spreads pref_81, pref_82, ..., pref_92 into the object
+        ...prefScores 
       });
 
       if (error) throw error;
-
-      // Move to Thank You screen only on success
       setScreen('thankyou');
     } catch (error) {
       console.error('Error submitting assessment:', error);
-      // Detailed error alert to help us debug
       alert('Error: ' + (error instanceof Error ? error.message : 'Unknown database error'));
     }
   };
@@ -114,7 +131,7 @@ function App() {
     );
   }
 
-  return <ThankYou studentName={studentName} />;
+  return <ThankYou studentName={studentData.name} />;
 }
 
 export default App;

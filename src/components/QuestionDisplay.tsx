@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-// Make sure this path is correct based on where your Question interface is
 import { Question } from '../data/questions'; 
 
 interface QuestionDisplayProps {
@@ -20,6 +19,17 @@ export default function QuestionDisplay({
   const [timeLeft, setTimeLeft] = useState(60);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
+  const isPreference = question.category === 'Preference';
+
+  // Colors for the linear scale circles
+  const circleColors = [
+    'border-green-700 text-green-700', // Strongly Disagree
+    'border-green-500 text-green-500', // Disagree
+    'border-yellow-600 text-yellow-600', // Neutral
+    'border-blue-400 text-blue-400',   // Agree
+    'border-blue-700 text-blue-700',   // Strongly Agree
+  ];
+
   useEffect(() => {
     setTimeLeft(60);
     setSelectedOption(null);
@@ -28,7 +38,6 @@ export default function QuestionDisplay({
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          // Auto-submit with 0 if time runs out
           onAnswer(0);
           return 0;
         }
@@ -73,7 +82,7 @@ export default function QuestionDisplay({
           transition={{ duration: 0.3 }}
           className="bg-white rounded-2xl shadow-xl max-w-3xl w-full p-8 md:p-12"
         >
-          {/* Header with Counter and Timer */}
+          {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div className="text-sm font-medium text-gray-500">
               Question {currentQuestionIndex + 1} of {totalQuestions}
@@ -90,41 +99,69 @@ export default function QuestionDisplay({
             </div>
           </div>
 
-          {/* Question Text - Changed from question.question to question.text */}
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 leading-tight">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 leading-tight">
             {question.text}
           </h2>
 
-          {/* Options List */}
-          <div className="space-y-3 mb-8">
-            {question.options.map((option, index) => (
-              <button
-                key={index}
-                // Changed from option.weight to option.score
-                onClick={() => handleOptionSelect(option.score)}
-                className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                  selectedOption === option.score
-                    ? 'border-blue-600 bg-blue-50 shadow-md'
-                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                      selectedOption === option.score
-                        ? 'border-blue-600 bg-blue-600'
-                        : 'border-gray-300'
-                    }`}
+          {/* Conditional Rendering: Linear Scale vs List */}
+          {isPreference ? (
+            /* --- LINEAR CIRCLE UI --- */
+            <div className="flex justify-between items-start w-full py-10 mb-8 overflow-x-auto">
+              {question.options.map((option, index) => (
+                <div key={index} className="flex flex-col items-center flex-1 min-w-[70px]">
+                  <button
+                    onClick={() => handleOptionSelect(option.score)}
+                    className={`w-12 h-12 md:w-14 md:h-14 border-4 rounded-full transition-all duration-200 
+                      hover:scale-110 active:scale-95 mb-4 ${circleColors[index]} 
+                      ${selectedOption === option.score ? 'bg-current bg-opacity-100' : 'bg-transparent'}
+                    `}
+                    style={{ 
+                      backgroundColor: selectedOption === option.score ? 'currentColor' : 'transparent' 
+                    }}
                   >
                     {selectedOption === option.score && (
-                      <div className="w-2 h-2 bg-white rounded-full" />
+                      <div className="w-full h-full flex items-center justify-center">
+                         <div className="w-3 h-3 bg-white rounded-full shadow-inner" />
+                      </div>
                     )}
-                  </div>
-                  <span className="text-lg text-gray-700">{option.text}</span>
+                  </button>
+                  <span className="text-[10px] md:text-xs font-bold text-center leading-tight uppercase text-gray-500 max-w-[80px]">
+                    {option.text}
+                  </span>
                 </div>
-              </button>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            /* --- STANDARD LIST UI --- */
+            <div className="space-y-3 mb-8">
+              {question.options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleOptionSelect(option.score)}
+                  className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
+                    selectedOption === option.score
+                      ? 'border-blue-600 bg-blue-50 shadow-md'
+                      : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                        selectedOption === option.score
+                          ? 'border-blue-600 bg-blue-600'
+                          : 'border-gray-300'
+                      }`}
+                    >
+                      {selectedOption === option.score && (
+                        <div className="w-2 h-2 bg-white rounded-full" />
+                      )}
+                    </div>
+                    <span className="text-lg text-gray-700">{option.text}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Navigation Button */}
           <button
