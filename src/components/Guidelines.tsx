@@ -35,7 +35,7 @@ export default function Guidelines({ onStart }: GuidelinesProps) {
             Genius Brainz Life Solutions
           </h1>
           <h2 className="text-2xl md:text-3xl text-[#b08d3c] font-extrabold mt-2 uppercase tracking-tight">
-            Psychiometric Test
+            Psychometric Test
           </h2>
         </div>
 
